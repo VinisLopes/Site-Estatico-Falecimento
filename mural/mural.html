@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mural – Visualização de Homenagens</title>
+
+<style>
+:root{
+  --bg:#f4f7ff;
+  --surface:#ffffff;
+  --surface-soft:#f9fbff;
+
+  --text:#0f172a;
+  --muted:#64748b;
+
+  --primary:#2563eb;
+  --accent:#22c55e;
+
+  --radius-xl:26px;
+  --radius-lg:18px;
+  --shadow-soft:0 22px 70px rgba(15,23,42,.10);
+  --transition:.2s ease;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 0 0,#e0f2fe 0,#f4f7ff 40%,#ffffff 100%);
+  color:var(--text);
+}
+
+/* topo */
+.header{
+  max-width:1120px;
+  margin:0 auto;
+  padding:16px 20px 6px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.badge-logo{
+  width:32px;
+  height:32px;
+  border-radius:999px;
+  background:conic-gradient(from 160deg,#2563eb,#22c55e,#2563eb);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:1rem;
+  font-weight:700;
+}
+.header-text strong{
+  font-size:.95rem;
+}
+.header-text small{
+  display:block;
+  font-size:.75rem;
+  color:var(--muted);
+}
+.header-link a{
+  font-size:.78rem;
+  color:var(--muted);
+  text-decoration:none;
+}
+.header-link a:hover{
+  text-decoration:underline;
+}
+
+/* layout principal */
+.main{
+  max-width:1120px;
+  margin:0 auto 40px;
+  padding:10px 20px 32px;
+}
+
+/* card do topo (dados do mural) */
+.mural-card{
+  border-radius:var(--radius-xl);
+  background:
+    radial-gradient(circle at 0 0,#e0f2fe55,transparent 55%),
+    radial-gradient(circle at 100% 100%,#bbf7d055,transparent 55%),
+    var(--surface);
+  box-shadow:var(--shadow-soft);
+  padding:20px 24px 18px;
+  margin-bottom:18px;
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+}
+.mural-left{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+}
+.avatar-circle{
+  width:52px;
+  height:52px;
+  border-radius:999px;
+  background:#dbeafe;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  color:#1d4ed8;
+  font-size:1.1rem;
+}
+.mural-main h1{
+  font-size:1.3rem;
+  margin-bottom:2px;
+}
+.mural-main .dates{
+  font-size:.82rem;
+  color:var(--muted);
+}
+.mural-main .relacao{
+  font-size:.8rem;
+  color:var(--muted);
+  margin-top:2px;
+}
+.mural-right{
+  padding:10px 14px;
+  border-radius:20px;
+  background:#ecfdf3;
+  font-size:.78rem;
+  color:#15803d;
+  min-width:220px;
+}
+
+/* grid topo: abas + QR */
+.grid-top{
+  display:grid;
+  grid-template-columns: minmax(0,1.4fr) minmax(0,1fr);
+  gap:16px;
+  margin-bottom:12px;
+}
+@media(max-width:900px){
+  .grid-top{grid-template-columns:1fr;}
+}
+
+/* cards padrão */
+.card{
+  border-radius:var(--radius-xl);
+  background:var(--surface);
+  box-shadow:var(--shadow-soft);
+  padding:18px 20px 18px;
+}
+.card-title{
+  font-size:1rem;
+  font-weight:600;
+  margin-bottom:4px;
+}
+.card-sub{
+  font-size:.8rem;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+/* QR card */
+.qr-card{
+  text-align:left;
+}
+.qr-box{
+  margin-top:8px;
+  border-radius:18px;
+  border:1px solid #e2e8f0;
+  background:var(--surface-soft);
+  padding:10px;
+  display:flex;
+  gap:12px;
+}
+.qr-box img{
+  width:180px;
+  height:180px;
+  border-radius:16px;
+  background:#fff;
+}
+.qr-text{
+  font-size:.78rem;
+  color:var(--muted);
+}
+
+/* link abaixo do QR */
+.qr-link{
+  margin-top:10px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.qr-link input{
+  flex:1;
+  border-radius:999px;
+  border:1px solid #dbeafe;
+  padding:8px 11px;
+  font-size:.8rem;
+  background:#f9fbff;
+}
+.qr-link button{
+  border:none;
+  border-radius:999px;
+  padding:8px 14px;
+  font-size:.78rem;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;
+}
+
+/* card carrossel de homenagens (agora fica no lugar da mensagem principal) */
+.carousel-card{
+  margin-top:0;
+}
+.carousel-header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:10px;
+  margin-bottom:8px;
+}
+.carousel-header-top h2{
+  font-size:1rem;
+  font-weight:600;
+}
+.carousel-header-top p{
+  font-size:.8rem;
+  color:var(--muted);
+}
+
+/* abas do carrossel */
+.tabs{
+  margin-top:6px;
+}
+.tab-header{
+  display:flex;
+  gap:6px;
+  border-radius:999px;
+  background:#e5edff;
+  padding:4px;
+  margin-bottom:10px;
+}
+.tab-btn{
+  flex:1;
+  border-radius:999px;
+  border:none;
+  padding:8px 10px;
+  font-size:.82rem;
+  cursor:pointer;
+  background:transparent;
+  color:#1f2933;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.tab-btn span.emoji{font-size:.9rem;}
+.tab-btn.active{
+  background:#ffffff;
+  color:#0f172a;
+  box-shadow:0 8px 20px rgba(15,23,42,.12);
+}
+
+/* conteúdo do carrossel */
+.carousel-shell{
+  border-radius:var(--radius-lg);
+  background:var(--surface-soft);
+  border:1px solid #e2e8f0;
+  padding:16px 16px 14px;
+  min-height:220px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.carousel-empty{
+  font-size:.85rem;
+  color:var(--muted);
+}
+.carousel-content{
+  display:none;
+}
+.carousel-content.active{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.c-nome{
+  font-size:.9rem;
+  font-weight:600;
+}
+.c-relacao{
+  font-size:.8rem;
+  color:var(--muted);
+}
+.c-tipo{
+  font-size:.78rem;
+  color:#4b5563;
+  margin-top:2px;
+}
+.c-corpo{
+  font-size:.9rem;
+  margin-top:6px;
+  white-space:pre-wrap;
+}
+.c-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:6px;
+  font-size:.78rem;
+  color:var(--muted);
+}
+
+/* galeria de fotos */
+.foto-gallery{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:6px;
+}
+.foto-thumb{
+  width:120px;
+  height:120px;
+  border-radius:14px;
+  object-fit:cover;
+  background:#e5e7eb;
+}
+
+/* vídeo */
+.video-box{
+  margin-top:6px;
+}
+.video-box video{
+  max-width:100%;
+  border-radius:16px;
+  background:#000;
+}
+
+/* rodapé interno */
+.footer-note{
+  max-width:1120px;
+  margin:10px auto 0;
+  font-size:.75rem;
+  color:var(--muted);
+  text-align:center;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="badge-logo">♡</div>
+    <div class="header-text">
+      <strong>Mural de Homenagens</strong>
+      <small>Visualização do mural</small>
+    </div>
+  </div>
+  <div class="header-link">
+    <a href="dashboard.html">← Voltar para Meus Murais</a>
+  </div>
+</header>
+
+<main class="main">
+  <!-- Card topo com dados do mural -->
+  <section class="mural-card" id="muralHeader">
+    <div class="mural-left">
+      <div class="avatar-circle" id="avatarInicial">M</div>
+      <div class="mural-main">
+        <h1 id="muralNome">Mural</h1>
+        <div class="dates" id="muralDatas">Datas</div>
+        <div class="relacao" id="muralRelacao">Homenagem criada por …</div>
+      </div>
+    </div>
+    <div class="mural-right">
+      <strong>Uso em velório</strong><br>
+      <span id="muralUsoTexto">
+        Exiba este mural em uma TV ou TOTEM durante o velório.
+      </span>
+      <br><br>
+      <span id="muralCriadoEm"></span><br>
+      <span id="muralAtualizadoEm"></span>
+    </div>
+  </section>
+
+  <!-- TOPO: card com abas + QR Code -->
+  <section class="grid-top">
+
+    <!-- AGORA AS 3 ABAS FICAM NO LUGAR DA MENSAGEM PRINCIPAL -->
+    <section class="card carousel-card">
+      <div class="carousel-header-top">
+        <div>
+          <h2>Homenagens recebidas</h2>
+          <p>Mensagens, fotos e vídeos enviados pela família a partir do QR Code ou do link.</p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab-header">
+          <button type="button" class="tab-btn active" data-tab="textos">
+            <span class="emoji">✍️</span> Textos
+          </button>
+          <button type="button" class="tab-btn" data-tab="fotos">
+            <span class="emoji">📷</span> Fotos
+          </button>
+          <button type="button" class="tab-btn" data-tab="videos">
+            <span class="emoji">🎥</span> Vídeos
+          </button>
+        </div>
+
+        <div class="carousel-shell">
+          <div class="carousel-empty" id="carouselEmpty">
+            Ainda não há homenagens deste tipo para este mural.
+          </div>
+
+          <div class="carousel-content" id="carouselContent">
+            <div>
+              <div class="c-nome" id="cNome"></div>
+              <div class="c-relacao" id="cRelacao"></div>
+              <div class="c-tipo" id="cTipo"></div>
+            </div>
+
+            <div class="c-corpo" id="cCorpo"></div>
+
+            <!-- aqui vão fotos ou vídeo quando for o caso -->
+            <div id="mediaContainer"></div>
+
+            <div class="c-footer">
+              <span id="cPosicao"></span>
+              <span id="cData"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QR Code e link -->
+    <section class="card qr-card">
+      <div class="card-title">QR Code e link</div>
+      <div class="card-sub">
+        Aponte a câmera do celular para o QR Code ou copie o link abaixo
+        para enviar o formulário de homenagem à família e amigos.
+      </div>
+
+      <div class="qr-box">
+        <img id="qrImagem" alt="QR Code do mural">
+        <div class="qr-text">
+          <strong>QR Code do mural (formulário de homenagem)</strong><br><br>
+          As pessoas poderão enviar mensagens, fotos e vídeos diretamente
+          por este código. Em poucos segundos, as homenagens aparecem na tela
+          quando o mural está sendo exibido.
+        </div>
+      </div>
+
+      <div class="qr-link">
+        <input id="linkHomenagem" readonly>
+        <button type="button" id="btnCopiar">Copiar</button>
+      </div>
+    </section>
+
+  </section>
+</main>
+
+<p class="footer-note">
+  Este é um protótipo local usando <strong>localStorage</strong>. Em produção, os dados seriam
+  carregados de um servidor e exibidos em telas de TV ou TOTEM em tempo real.
+</p>
+
+<script>
+const STORAGE_MURAIS = 'murais_mh';
+const STORAGE_HOMENAGENS = 'homenagens_mh';
+const DISPLAY_MS = 8000; // 8s
+
+function getIdFromUrl(){
+  const p = new URLSearchParams(window.location.search);
+  return p.get('id');
+}
+function carregarMurais(){
+  try{
+    const raw = localStorage.getItem(STORAGE_MURAIS);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function carregarHomenagens(){
+  try{
+    const raw = localStorage.getItem(STORAGE_HOMENAGENS);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const id = getIdFromUrl();
+  const murais = carregarMurais();
+  const mural = murais.find(m => m.id === id);
+
+  const avatarInicial = document.getElementById('avatarInicial');
+  const muralNome     = document.getElementById('muralNome');
+  const muralDatas    = document.getElementById('muralDatas');
+  const muralRelacao  = document.getElementById('muralRelacao');
+  const muralCriadoEm = document.getElementById('muralCriadoEm');
+  const muralAtualizadoEm = document.getElementById('muralAtualizadoEm');
+
+  if (mural){
+    const inicial = (mural.nome || 'M').trim()[0] || 'M';
+    avatarInicial.textContent = inicial.toUpperCase();
+    muralNome.textContent = mural.nome || 'Mural';
+
+    const dNasc = mural.dataNascimento || '';
+    const dFal  = mural.dataFalecimento || '';
+    if (dNasc && dFal){
+      muralDatas.textContent = `${dNasc} – ${dFal}`;
+    } else {
+      muralDatas.textContent = 'Datas não informadas';
+    }
+
+    muralRelacao.textContent =
+      mural.relacao ? `Homenagem criada por: ${mural.relacao}` : 'Homenagem criada pela família.';
+
+    if (mural.criadoEm){
+      const d = new Date(mural.criadoEm);
+      muralCriadoEm.textContent = 'Criado em ' + d.toLocaleDateString('pt-BR');
+    }
+    if (mural.atualizadoEm){
+      const d = new Date(mural.atualizadoEm);
+      muralAtualizadoEm.textContent = 'Atualizado em ' + d.toLocaleDateString('pt-BR');
+    }
+  } else {
+    muralNome.textContent = 'Mural não encontrado';
+    muralDatas.textContent = '';
+    muralRelacao.textContent = 'Este link não está associado a um mural neste navegador.';
+  }
+
+  /* QR + link de homenagem */
+  const linkHomenagemInput = document.getElementById('linkHomenagem');
+  const qrImagem = document.getElementById('qrImagem');
+  const btnCopiar = document.getElementById('btnCopiar');
+
+  const urlBase = window.location.origin + window.location.pathname.replace(/mural\.html$/,'');
+  const urlHomenagem = `${urlBase}homenagem.html?id=${encodeURIComponent(id || '')}`;
+
+  linkHomenagemInput.value = urlHomenagem;
+  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' +
+                encodeURIComponent(urlHomenagem);
+  qrImagem.src = qrUrl;
+
+  btnCopiar.addEventListener('click', () => {
+    linkHomenagemInput.select();
+    try{
+      document.execCommand('copy');
+      btnCopiar.textContent = 'Copiado';
+      setTimeout(()=>btnCopiar.textContent='Copiar',1500);
+    }catch(e){}
+  });
+
+  /* ========== CARROSSEL DE HOMENAGENS ========== */
+  const homenagens = carregarHomenagens().filter(h => h.muralId === id);
+
+  const textos = homenagens.filter(h => h.mensagemTexto && h.mensagemTexto.trim().length);
+  const fotos  = homenagens.filter(h => h.fotos && h.fotos.length);
+  const videos = homenagens.filter(h => h.video);
+
+  const dataMap = { textos, fotos, videos };
+  let currentTab = 'textos';
+  let indices = { textos:0, fotos:0, videos:0 };
+  let timerId = null;
+
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const carouselEmpty = document.getElementById('carouselEmpty');
+  const carouselContent = document.getElementById('carouselContent');
+  const cNome = document.getElementById('cNome');
+  const cRelacao = document.getElementById('cRelacao');
+  const cTipo = document.getElementById('cTipo');
+  const cCorpo = document.getElementById('cCorpo');
+  const cPosicao = document.getElementById('cPosicao');
+  const cData = document.getElementById('cData');
+  const mediaContainer = document.getElementById('mediaContainer');
+
+  function getArrayForCurrentTab(){
+    return dataMap[currentTab] || [];
+  }
+
+  function renderCarousel(){
+    const lista = getArrayForCurrentTab();
+    mediaContainer.innerHTML = '';
+
+    if (!lista.length){
+      carouselEmpty.style.display = 'block';
+      carouselContent.classList.remove('active');
+      return;
+    }
+    if (indices[currentTab] >= lista.length){
+      indices[currentTab] = 0;
+    }
+    carouselEmpty.style.display = 'none';
+    carouselContent.classList.add('active');
+
+    const item = lista[indices[currentTab]];
+
+    cNome.textContent = item.nome || '—';
+    cRelacao.textContent = item.relacao || '';
+
+    let tipoLabel = '';
+    let corpoHtml = '';
+
+    if (currentTab === 'textos'){
+      tipoLabel = 'Texto / poema';
+      corpoHtml = item.mensagemTexto || '';
+    } else if (currentTab === 'fotos'){
+      tipoLabel = 'Foto(s)';
+      const nomes = (item.fotos || []).map(f => f.nome).join(', ');
+      if (nomes) corpoHtml = `<strong>Arquivo(s):</strong> ${nomes}`;
+
+      // mostra as fotos
+      if (item.fotos && item.fotos.length){
+        const gal = document.createElement('div');
+        gal.className = 'foto-gallery';
+        item.fotos.forEach(f => {
+          if (f.dataUrl){
+            const img = document.createElement('img');
+            img.className = 'foto-thumb';
+            img.src = f.dataUrl;
+            img.alt = f.nome || 'Foto da homenagem';
+            gal.appendChild(img);
+          }
+        });
+        mediaContainer.appendChild(gal);
+      }
+
+      if (item.comentarioFotos){
+        corpoHtml += (corpoHtml ? '<br><br>' : '') + item.comentarioFotos;
+      }
+
+    } else {
+      tipoLabel = 'Vídeo';
+      const nomeVideo = item.video ? item.video.nome : '';
+      if (nomeVideo){
+        corpoHtml = `<strong>Arquivo:</strong> ${nomeVideo}`;
+      }
+      if (item.comentarioVideo){
+        corpoHtml += (corpoHtml ? '<br><br>' : '') + item.comentarioVideo;
+      }
+
+      if (item.video && item.video.dataUrl){
+        const vb = document.createElement('div');
+        vb.className = 'video-box';
+        const v = document.createElement('video');
+        v.controls = true;
+        v.src = item.video.dataUrl;
+        vb.appendChild(v);
+        mediaContainer.appendChild(vb);
+      }
+    }
+
+    cTipo.textContent = tipoLabel;
+    cCorpo.innerHTML = corpoHtml.replace(/\n/g,'<br>');
+
+    cPosicao.textContent = `${indices[currentTab] + 1} de ${lista.length}`;
+
+    if (item.enviadaEm){
+      const d = new Date(item.enviadaEm);
+      cData.textContent = d.toLocaleString('pt-BR');
+    } else {
+      cData.textContent = '';
+    }
+  }
+
+  function startAutoCycle(){
+    if (timerId) clearInterval(timerId);
+    const lista = getArrayForCurrentTab();
+    if (lista.length <= 1) return;
+    timerId = setInterval(() => {
+      const listaAtual = getArrayForCurrentTab();
+      if (!listaAtual.length) return;
+      indices[currentTab] = (indices[currentTab] + 1) % listaAtual.length;
+      renderCarousel();
+    }, DISPLAY_MS);
+  }
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      if (tab === currentTab) return;
+      currentTab = tab;
+      tabBtns.forEach(b => b.classList.toggle('active', b === btn));
+      renderCarousel();
+      startAutoCycle();
+    });
+  });
+
+  renderCarousel();
+  startAutoCycle();
+});
+</script>
+
+</body>
+</html>

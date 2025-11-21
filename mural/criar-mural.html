@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Criar Mural • Mural de Homenagens</title>
+
+<style>
+:root{
+  --bg:#f4f7ff;
+  --surface:#ffffff;
+  --surface-soft:#f9fbff;
+
+  --text:#0f172a;
+  --muted:#64748b;
+
+  --primary:#1d9cf0;
+  --accent:#22c55e;
+
+  --radius-xl:30px;
+  --radius-lg:18px;
+  --shadow-soft:0 22px 70px rgba(15,23,42,.12);
+  --transition:.2s ease;
+}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 0 0,#e0f2fe 0,#f4f7ff 40%,#ffffff 100%);
+  color:var(--text);
+}
+
+/* centro da tela, com espaço para o conteúdo maior */
+.page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px 18px 40px;
+}
+.page-inner{
+  width:100%;
+  max-width:1040px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+/* topo */
+.top-link{
+  font-size:.86rem;
+  color:#64748b;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.top-link:hover{color:var(--primary);}
+
+/* header */
+.header{
+  text-align:center;
+}
+.header-icon{
+  width:70px;
+  height:70px;
+  border-radius:999px;
+  margin:0 auto 14px;
+  background:conic-gradient(from 160deg,#1d9cf0,#22c55e,#1d9cf0);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:1.5rem;
+}
+.header-title{
+  font-size:2rem;
+  margin-bottom:4px;
+}
+.header-sub{
+  font-size:.92rem;
+  color:var(--muted);
+}
+
+/* card principal */
+.card{
+  border-radius:var(--radius-xl);
+  background:var(--surface);
+  box-shadow:var(--shadow-soft);
+  padding:24px 24px 22px;
+}
+.card-section-title{
+  font-size:1rem;
+  font-weight:600;
+  margin-bottom:16px;
+}
+.card-divider{
+  height:1px;
+  margin:14px -24px 18px;
+  background:#e2e8f0;
+}
+
+/* layout da foto + campos */
+.photo-row{
+  display:flex;
+  gap:22px;
+  align-items:flex-start;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.photo-avatar{
+  width:74px;
+  height:74px;
+  border-radius:999px;
+  background:#f1f5f9;
+  border:2px solid #e2e8f0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#94a3b8;
+  font-size:1.6rem;
+  box-shadow:0 14px 36px rgba(15,23,42,.08);
+}
+.photo-actions{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.btn-outline{
+  border-radius:999px;
+  border:1px solid #cbd5f5;
+  background:#f9fbff;
+  padding:9px 16px;
+  font-size:.86rem;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  transition:var(--transition);
+}
+.btn-outline span.icon{
+  width:20px;
+  height:20px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#1d9cf0,#22c55e);
+  color:#fff;
+  font-size:.8rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.btn-outline:hover{
+  background:#ffffff;
+  border-color:var(--primary);
+  box-shadow:0 12px 30px rgba(15,23,42,.12);
+}
+.photo-hint{
+  font-size:.8rem;
+  color:var(--muted);
+}
+
+/* form campos */
+.form-grid-2{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+@media(max-width:820px){
+  .form-grid-2{grid-template-columns:1fr;}
+}
+
+.field{
+  margin-bottom:14px;
+}
+.label{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:.82rem;
+  margin-bottom:4px;
+}
+.label span.req{
+  color:#ef4444;
+  margin-left:4px;
+}
+.input,
+.select,
+.textarea{
+  width:100%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #dbeafe;
+  background:#f9fbff;
+  font-size:.9rem;
+  outline:none;
+  transition:var(--transition);
+}
+.input:focus,
+.select:focus,
+.textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 1px rgba(29,156,240,.12);
+  background:#ffffff;
+}
+.textarea{
+  min-height:120px;
+  resize:vertical;
+}
+.helper{
+  font-size:.78rem;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* rodapé do form */
+.form-footer{
+  margin-top:18px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+.btn-row{
+  display:flex;
+  gap:10px;
+}
+.btn-secondary,
+.btn-primary{
+  border-radius:999px;
+  padding:11px 24px;
+  font-size:.9rem;
+  font-weight:600;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:var(--transition);
+}
+.btn-secondary{
+  background:#ffffff;
+  border-color:#e2e8f0;
+  color:#0f172a;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.btn-secondary:hover{
+  background:#f9fafb;
+  box-shadow:0 12px 30px rgba(15,23,42,.08);
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#ffffff;
+  box-shadow:0 18px 46px rgba(15,23,42,.22);
+}
+.btn-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 22px 60px rgba(15,23,42,.28);
+}
+.form-footer-note{
+  font-size:.78rem;
+  color:var(--muted);
+}
+
+/* responsivo extra */
+@media(max-width:720px){
+  .card{padding-inline:18px;}
+  .header-title{font-size:1.8rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-inner">
+    <a href="dashboard.html" class="top-link">← Voltar</a>
+
+    <header class="header">
+      <div class="header-icon">♡</div>
+      <h1 class="header-title" id="tituloPagina">Criar Mural</h1>
+      <p class="header-sub" id="subPagina">
+        Preserve as memórias de quem você ama para sempre, de forma simples e respeitosa.
+      </p>
+    </header>
+
+    <section class="card">
+      <h2 class="card-section-title">Informações do ente querido</h2>
+      <div class="card-divider"></div>
+
+      <form id="formMural">
+        <!-- id oculto -->
+        <input type="hidden" id="muralId">
+
+        <!-- foto + ação (somente visual, sem upload real) -->
+        <div class="photo-row">
+          <div class="photo-avatar">♡</div>
+          <div class="photo-actions">
+            <button type="button" class="btn-outline">
+              <span class="icon">↑</span>
+              <span>Escolher foto (demo)</span>
+            </button>
+            <span class="photo-hint">
+              Nesta versão de teste, a foto é apenas ilustrativa. Em produção, aqui entraria o upload real.
+            </span>
+          </div>
+        </div>
+
+        <!-- nome -->
+        <div class="field">
+          <label class="label" for="nome">
+            <span>Nome completo</span>
+            <span class="req">*</span>
+          </label>
+          <input id="nome" class="input" type="text" placeholder="Nome completo do ente querido" required />
+        </div>
+
+        <!-- relação -->
+        <div class="field">
+          <label class="label" for="relacao">
+            <span>Sua relação</span>
+          </label>
+          <select id="relacao" class="select">
+            <option value="">Selecione sua relação</option>
+            <option>Filho(a)</option>
+            <option>Cônjuge</option>
+            <option>Irmão / Irmã</option>
+            <option>Amigo(a)</option>
+            <option>Outro</option>
+          </select>
+        </div>
+
+        <!-- datas -->
+        <div class="form-grid-2">
+          <div class="field">
+            <label class="label" for="nascimento">
+              <span>Data de nascimento</span>
+            </label>
+            <input id="nascimento" class="input" type="date" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="falecimento">
+              <span>Data de falecimento</span>
+              <span class="req">*</span>
+            </label>
+            <input id="falecimento" class="input" type="date" required />
+          </div>
+        </div>
+
+        <!-- biografia -->
+        <div class="field">
+          <label class="label" for="bio">
+            <span>Biografia / homenagem principal</span>
+          </label>
+          <textarea id="bio" class="textarea" placeholder="Conte um pouco sobre a vida, a personalidade e o legado dessa pessoa especial..."></textarea>
+          <p class="helper">
+            Essa mensagem pode aparecer em destaque na TV e no mural on-line.
+          </p>
+        </div>
+
+        <!-- privacidade -->
+        <div class="field">
+          <label class="label" for="privacidade">
+            <span>Privacidade do mural</span>
+          </label>
+          <select id="privacidade" class="select">
+            <option value="">Selecione uma opção</option>
+            <option value="privado">Apenas família e convidados</option>
+            <option value="publico">Link público (apenas para quem recebe)</option>
+          </select>
+          <p class="helper">
+            A privacidade pode ser ajustada depois, antes de enviar o link para a funerária.
+          </p>
+        </div>
+
+        <div class="form-footer">
+          <div class="btn-row">
+            <a href="dashboard.html" class="btn-secondary">Cancelar</a>
+            <button type="submit" class="btn-primary" id="btnSalvar">♡ Criar Mural</button>
+          </div>
+          <div class="form-footer-note" id="notaRodape">
+            Após criar, você receberá o link e o QR Code para compartilhar com a família e com a funerária (simulação local).
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'murais_mh';
+
+function carregarMurais(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){
+    return [];
+  }
+}
+
+function salvarMurais(lista){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+}
+
+function getParam(name){
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const form = document.getElementById('formMural');
+  const titulo = document.getElementById('tituloPagina');
+  const sub = document.getElementById('subPagina');
+  const btnSalvar = document.getElementById('btnSalvar');
+  const nota = document.getElementById('notaRodape');
+  const campoId = document.getElementById('muralId');
+
+  const idEdicao = getParam('id');
+
+  if(idEdicao){
+    const murais = carregarMurais();
+    const mural = murais.find(m=>m.id === idEdicao);
+
+    if(mural){
+      campoId.value = mural.id;
+      document.getElementById('nome').value = mural.nome || '';
+      document.getElementById('relacao').value = mural.relacao || '';
+      document.getElementById('nascimento').value = mural.nascimento || '';
+      document.getElementById('falecimento').value = mural.falecimento || '';
+      document.getElementById('bio').value = mural.bio || '';
+      document.getElementById('privacidade').value = mural.privacidade || '';
+
+      titulo.textContent = 'Editar Mural';
+      sub.textContent = 'Atualize as informações deste mural antes de enviar para a funerária.';
+      btnSalvar.textContent = 'Salvar alterações';
+      nota.textContent = 'As alterações serão salvas somente neste navegador (CRUD local).';
+    }
+  }
+
+  form.addEventListener('submit', (ev)=>{
+    ev.preventDefault();
+
+    const nome = document.getElementById('nome').value.trim();
+    const relacao = document.getElementById('relacao').value;
+    const nascimento = document.getElementById('nascimento').value;
+    const falecimento = document.getElementById('falecimento').value;
+    const bio = document.getElementById('bio').value.trim();
+    const privacidade = document.getElementById('privacidade').value || 'privado';
+
+    if(!nome || !falecimento){
+      alert('Preencha pelo menos o nome completo e a data de falecimento.');
+      return;
+    }
+
+    const agora = new Date().toISOString();
+    let murais = carregarMurais();
+    const idExistente = campoId.value;
+
+    if(idExistente){
+      const idx = murais.findIndex(m=>m.id === idExistente);
+      if(idx > -1){
+        murais[idx] = {
+          ...murais[idx],
+          nome,
+          relacao,
+          nascimento,
+          falecimento,
+          bio,
+          privacidade,
+          atualizadoEm: agora,
+          status: 'pronto'
+        };
+      }
+    }else{
+      const novo = {
+        id: Date.now().toString(),
+        nome,
+        relacao,
+        nascimento,
+        falecimento,
+        bio,
+        privacidade,
+        criadoEm: agora,
+        atualizadoEm: agora,
+        status: 'pronto'
+      };
+      murais.push(novo);
+    }
+
+    salvarMurais(murais);
+    window.location.href = 'dashboard.html';
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recuperar Senha • Mural de Homenagens</title>
+
+<style>
+:root{
+  --bg:#f4f7ff;
+  --surface:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --primary:#1d9cf0;
+  --accent:#22c55e;
+  --radius-xl:30px;
+  --shadow-soft:0 22px 70px rgba(15,23,42,.12);
+  --transition:.2s ease;
+}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 0 0,#e0f2fe 0,#f4f7ff 40%,#ffffff 100%);
+  color:var(--text);
+}
+
+/* centro da tela */
+.page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px 18px;
+}
+.page-inner{
+  width:100%;
+  max-width:720px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  align-items:center;
+}
+
+/* link voltar */
+.top-link{
+  align-self:flex-start;
+  font-size:.86rem;
+  color:#64748b;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.top-link:hover{color:var(--primary);}
+
+/* card */
+.card{
+  width:100%;
+  border-radius:var(--radius-xl);
+  background:var(--surface);
+  box-shadow:var(--shadow-soft);
+  padding:26px 26px 24px;
+}
+.card-header{
+  text-align:center;
+  margin-bottom:18px;
+}
+.card-icon{
+  width:54px;
+  height:54px;
+  border-radius:999px;
+  margin:0 auto 10px;
+  background:conic-gradient(from 160deg,#1d9cf0,#22c55e,#1d9cf0);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:1.2rem;
+}
+.card-title{
+  font-size:1.5rem;
+  margin-bottom:4px;
+}
+.card-sub{
+  font-size:.9rem;
+  color:var(--muted);
+}
+
+/* form */
+.field{margin-bottom:14px;}
+.label{
+  display:block;
+  font-size:.82rem;
+  margin-bottom:4px;
+}
+.input{
+  width:100%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #dbeafe;
+  background:#f9fbff;
+  font-size:.9rem;
+  outline:none;
+  transition:var(--transition);
+}
+.input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 1px rgba(29,156,240,.12);
+  background:#ffffff;
+}
+.small-text{
+  font-size:.78rem;
+  color:var(--muted);
+  margin-top:6px;
+}
+.btn-primary{
+  margin-top:16px;
+  width:100%;
+  border:none;
+  border-radius:999px;
+  padding:11px 16px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;
+  font-weight:600;
+  font-size:.92rem;
+  cursor:pointer;
+  box-shadow:0 18px 46px rgba(15,23,42,.22);
+  transition:var(--transition);
+}
+.btn-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 22px 60px rgba(15,23,42,.28);
+}
+.card-footer{
+  margin-top:12px;
+  text-align:center;
+  font-size:.85rem;
+  color:var(--muted);
+}
+.card-footer a{
+  color:var(--primary);
+  text-decoration:none;
+}
+.card-footer a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-inner">
+    <a href="login.html" class="top-link">← Voltar para login</a>
+
+    <section class="card">
+      <div class="card-header">
+        <div class="card-icon">🔑</div>
+        <h1 class="card-title">Recuperar senha</h1>
+        <p class="card-sub">
+          Informe o e-mail da sua conta para enviar um link seguro de redefinição de senha.
+        </p>
+      </div>
+
+      <!-- fluxo estático: após enviar volta para login -->
+      <form action="login.html" method="get">
+        <div class="field">
+          <label class="label" for="email">E-mail cadastrado</label>
+          <input id="email" class="input" type="email" placeholder="seuemail@exemplo.com" />
+        </div>
+
+        <p class="small-text">
+          Você receberá um e-mail com instruções. Caso não encontre, verifique também a pasta de spam.
+        </p>
+
+        <button type="submit" class="btn-primary">Enviar link de recuperação</button>
+
+        <div class="card-footer">
+          Lembrou a senha? <a href="login.html">Entrar</a>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+
+</body>
+</html>

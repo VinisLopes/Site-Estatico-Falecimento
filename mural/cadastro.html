@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Criar Conta • Mural de Homenagens</title>
+
+<style>
+:root{
+  --bg:#f4f7ff;
+  --surface:#ffffff;
+
+  --text:#0f172a;
+  --muted:#64748b;
+
+  --primary:#1d9cf0;
+  --accent:#22c55e;
+
+  --radius-xl:30px;
+  --shadow-soft:0 22px 70px rgba(15,23,42,.12);
+  --transition:.2s ease;
+}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 0 0,#e0f2fe 0,#f4f7ff 40%,#ffffff 100%);
+  color:var(--text);
+}
+
+/* centro absoluto da tela */
+.page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px 18px;
+}
+.page-inner{
+  width:100%;
+  max-width:760px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+}
+
+/* link de voltar */
+.top-link{
+  align-self:flex-start;
+  font-size:.86rem;
+  color:#64748b;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.top-link:hover{color:var(--primary);}
+
+/* card */
+.card{
+  width:100%;
+  border-radius:var(--radius-xl);
+  background:var(--surface);
+  box-shadow:var(--shadow-soft);
+  padding:26px 26px 24px;
+}
+.card-header{
+  text-align:center;
+  margin-bottom:18px;
+}
+.card-icon{
+  width:54px;
+  height:54px;
+  border-radius:999px;
+  margin:0 auto 10px;
+  background:conic-gradient(from 160deg,#1d9cf0,#22c55e,#1d9cf0);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:1.2rem;
+}
+.card-title{
+  font-size:1.5rem;
+  margin-bottom:4px;
+}
+.card-sub{
+  font-size:.9rem;
+  color:var(--muted);
+}
+
+/* form */
+.grid-2{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+@media(max-width:720px){
+  .grid-2{grid-template-columns:1fr;}
+}
+
+.field{margin-bottom:14px;}
+.label{
+  display:block;
+  font-size:.82rem;
+  margin-bottom:4px;
+}
+.input,
+.select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #dbeafe;
+  background:#f9fbff;
+  font-size:.9rem;
+  outline:none;
+  transition:var(--transition);
+}
+.input:focus,
+.select:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 1px rgba(29,156,240,.12);
+  background:#ffffff;
+}
+
+.checkbox-row{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  margin-top:6px;
+}
+.checkbox-row input{margin-top:3px;}
+
+.btn-primary{
+  margin-top:16px;
+  width:100%;
+  border:none;
+  border-radius:999px;
+  padding:11px 16px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;
+  font-weight:600;
+  font-size:.92rem;
+  cursor:pointer;
+  box-shadow:0 18px 46px rgba(15,23,42,.22);
+  transition:var(--transition);
+}
+.btn-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 22px 60px rgba(15,23,42,.28);
+}
+.card-footer{
+  margin-top:12px;
+  text-align:center;
+  font-size:.85rem;
+  color:var(--muted);
+}
+.card-footer a{
+  color:var(--primary);
+  text-decoration:none;
+}
+.card-footer a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-inner">
+    <a href="login.html" class="top-link">← Voltar para login</a>
+
+    <section class="card">
+      <div class="card-header">
+        <div class="card-icon">+</div>
+        <h1 class="card-title">Criar Conta</h1>
+        <p class="card-sub">
+          Cadastre-se para criar murais de velório e compartilhar homenagens com a sua família.
+        </p>
+      </div>
+
+      <!-- fluxo estático: após cadastro volta para login -->
+      <form action="login.html" method="get">
+        <div class="field">
+          <label class="label" for="nome">Nome completo</label>
+          <input id="nome" class="input" type="text" placeholder="Seu nome completo" />
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label class="label" for="email">E-mail</label>
+            <input id="email" class="input" type="email" placeholder="seuemail@exemplo.com" />
+          </div>
+          <div class="field">
+            <label class="label" for="telefone">Telefone (opcional)</label>
+            <input id="telefone" class="input" type="tel" placeholder="(00) 00000-0000" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label class="label" for="senha">Senha</label>
+            <input id="senha" class="input" type="password" placeholder="Crie uma senha segura" />
+          </div>
+          <div class="field">
+            <label class="label" for="senha2">Confirmar senha</label>
+            <input id="senha2" class="input" type="password" placeholder="Repita a senha" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="perfil">Como pretende usar o serviço?</label>
+          <select id="perfil" class="select">
+            <option value="">Selecione uma opção</option>
+            <option>Somente para minha família</option>
+            <option>Sou responsável por organizar velórios</option>
+            <option>Outros usos</option>
+          </select>
+        </div>
+
+        <div class="checkbox-row">
+          <input id="termos" type="checkbox" />
+          <label for="termos" style="font-size:.8rem;color:var(--muted);">
+            Li e concordo com os termos de uso e a política de privacidade do Mural de Homenagens.
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary">Criar conta</button>
+
+        <div class="card-footer">
+          Já tem conta?
+          <a href="login.html">Entrar</a>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+
+</body>
+</html>

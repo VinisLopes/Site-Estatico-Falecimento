@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Enviar Homenagem – Mural de Homenagens</title>
+
+<style>
+:root{
+  --bg:#f4f7ff;
+  --surface:#ffffff;
+  --surface-soft:#f9fbff;
+
+  --text:#0f172a;
+  --muted:#64748b;
+
+  --primary:#2563eb;
+  --accent:#22c55e;
+
+  --radius-xl:26px;
+  --radius-lg:18px;
+  --shadow-soft:0 22px 70px rgba(15,23,42,.10);
+  --transition:.2s ease;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 0 0,#e0f2fe 0,#f4f7ff 40%,#ffffff 100%);
+  color:var(--text);
+}
+
+/* topo */
+.header{
+  max-width:1120px;
+  margin:0 auto;
+  padding:16px 20px 6px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.badge-logo{
+  width:32px;
+  height:32px;
+  border-radius:999px;
+  background:conic-gradient(from 160deg,#2563eb,#22c55e,#2563eb);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:1rem;
+  font-weight:700;
+}
+.header-text strong{
+  font-size:.95rem;
+}
+.header-text small{
+  display:block;
+  font-size:.75rem;
+  color:var(--muted);
+}
+.header-link a{
+  font-size:.78rem;
+  color:var(--muted);
+  text-decoration:none;
+}
+.header-link a:hover{
+  text-decoration:underline;
+}
+
+/* conteúdo principal */
+.main{
+  max-width:1120px;
+  margin:0 auto 36px;
+  padding:10px 20px 28px;
+}
+
+/* card do topo com info do mural */
+.mural-card{
+  border-radius:var(--radius-xl);
+  background:
+    radial-gradient(circle at 0 0,#e0f2fe55,transparent 55%),
+    radial-gradient(circle at 100% 100%,#bbf7d055,transparent 55%),
+    var(--surface);
+  box-shadow:var(--shadow-soft);
+  padding:20px 24px 18px;
+  margin-bottom:18px;
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+}
+.mural-left{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+}
+.avatar-circle{
+  width:52px;
+  height:52px;
+  border-radius:999px;
+  background:#dbeafe;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  color:#1d4ed8;
+  font-size:1.1rem;
+}
+.mural-main h1{
+  font-size:1.3rem;
+  margin-bottom:2px;
+}
+.mural-main .sub{
+  font-size:.82rem;
+  color:var(--muted);
+}
+.mural-main .sub strong{
+  color:#0f172a;
+}
+.mural-right{
+  padding:10px 14px;
+  border-radius:20px;
+  background:#ecfdf3;
+  font-size:.78rem;
+  color:#15803d;
+  min-width:220px;
+}
+
+/* card do formulário */
+.card{
+  border-radius:var(--radius-xl);
+  background:var(--surface);
+  box-shadow:var(--shadow-soft);
+  padding:20px 22px 22px;
+}
+.card h2{
+  font-size:1.05rem;
+  margin-bottom:6px;
+}
+.card p{
+  font-size:.82rem;
+  color:var(--muted);
+}
+
+/* grid de campos iniciais */
+.form-grid-top{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  gap:12px;
+}
+@media(max-width:800px){
+  .mural-card{flex-direction:column;}
+  .form-grid-top{grid-template-columns:1fr;}
+}
+
+.label{
+  font-size:.78rem;
+  font-weight:500;
+  margin-bottom:4px;
+  display:block;
+}
+input[type="text"],
+select,
+textarea{
+  width:100%;
+  border-radius:12px;
+  border:1px solid #dbeafe;
+  padding:9px 11px;
+  font-size:.9rem;
+  background:#f9fbff;
+}
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+/* abas */
+.tabs{
+  margin-top:20px;
+}
+.tab-header{
+  display:flex;
+  gap:6px;
+  border-radius:999px;
+  background:#e5edff;
+  padding:4px;
+}
+.tab-btn{
+  flex:1;
+  border-radius:999px;
+  border:none;
+  padding:8px 10px;
+  font-size:.82rem;
+  cursor:pointer;
+  background:transparent;
+  color:#1f2933;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.tab-btn span.emoji{font-size:.9rem;}
+.tab-btn.active{
+  background:#ffffff;
+  color:#0f172a;
+  box-shadow:0 8px 20px rgba(15,23,42,.12);
+}
+
+/* conteúdos das abas */
+.tab-body{
+  margin-top:14px;
+}
+.tab-pane{
+  display:none;
+  border-radius:var(--radius-lg);
+  background:var(--surface-soft);
+  border:1px solid #e2e8f0;
+  padding:14px 14px 16px;
+}
+.tab-pane.active{display:block;}
+
+.tab-pane p{
+  margin-bottom:8px;
+}
+
+/* input de arquivo */
+input[type="file"]{
+  padding:6px 8px;
+  background:#fff;
+}
+
+/* botão enviar */
+.actions{
+  margin-top:20px;
+  display:flex;
+  justify-content:flex-end;
+}
+.btn-primary{
+  border:none;
+  border-radius:999px;
+  padding:11px 24px;
+  font-size:.9rem;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;
+  box-shadow:0 14px 32px rgba(37,99,235,.35);
+  transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.btn-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 20px 50px rgba(37,99,235,.45);
+}
+.btn-primary:disabled{
+  opacity:.7;
+  cursor:default;
+  transform:none;
+  box-shadow:none;
+}
+
+/* nota de rodapé */
+.footer-note{
+  max-width:1120px;
+  margin:10px auto 0;
+  font-size:.75rem;
+  color:var(--muted);
+  text-align:center;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="badge-logo">♡</div>
+    <div class="header-text">
+      <strong>Mural de Homenagens</strong>
+      <small>Envio de homenagem</small>
+    </div>
+  </div>
+  <div class="header-link">
+    <a href="mural.html">← Voltar ao mural</a>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Card topo com resumo do mural -->
+  <section class="mural-card" id="muralHeader">
+    <div class="mural-left">
+      <div class="avatar-circle" id="avatarInicial">M</div>
+      <div class="mural-main">
+        <h1 id="muralNome">Mural</h1>
+        <div class="sub" id="muralSub">
+          Envie uma homenagem para a família.
+        </div>
+      </div>
+    </div>
+    <div class="mural-right">
+      <strong>Como será usado?</strong><br>
+      Sua homenagem poderá aparecer no mural exibido em uma TV ou TOTEM
+      durante o velório, junto com as mensagens de outros familiares e amigos.
+    </div>
+  </section>
+
+  <!-- Card do formulário -->
+  <section class="card">
+    <h2>Envie uma homenagem</h2>
+    <p>
+      Preencha os campos abaixo. Você pode escrever uma mensagem, enviar fotos
+      e também um vídeo curto, se desejar.
+    </p>
+
+    <form id="formHomenagem">
+      <div class="form-grid-top">
+        <div>
+          <label class="label" for="seuNome">Seu nome</label>
+          <input type="text" id="seuNome" name="seuNome"
+                 placeholder="Como você quer aparecer no mural" required />
+        </div>
+        <div>
+          <label class="label" for="seuParentesco">Seu grau de parentesco</label>
+          <select id="seuParentesco" name="seuParentesco" required>
+            <option value="">Selecione uma opção</option>
+            <option>Filho(a)</option>
+            <option>Pai</option>
+            <option>Mãe</option>
+            <option>Irmão(ã)</option>
+            <option>Avô / Avó</option>
+            <option>Tio(a)</option>
+            <option>Primo(a)</option>
+            <option>Amigo(a)</option>
+            <option>Colega de trabalho</option>
+            <option>Outro</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Abas -->
+      <div class="tabs">
+        <div class="tab-header">
+          <button type="button" class="tab-btn active" data-tab="texto">
+            <span class="emoji">✍️</span> Texto
+          </button>
+          <button type="button" class="tab-btn" data-tab="fotos">
+            <span class="emoji">📷</span> Fotos
+          </button>
+          <button type="button" class="tab-btn" data-tab="video">
+            <span class="emoji">🎥</span> Vídeo
+          </button>
+        </div>
+
+        <div class="tab-body">
+          <!-- TEXTO -->
+          <div class="tab-pane active" id="pane-texto">
+            <p><strong>Texto ou poema</strong><br>
+            Escreva uma mensagem de carinho, lembrança ou oração. Este será o
+            conteúdo principal da homenagem.</p>
+            <label class="label" for="mensagemTexto">Mensagem</label>
+            <textarea id="mensagemTexto" name="mensagemTexto"
+              placeholder="Escreva aqui sua homenagem..."></textarea>
+          </div>
+
+          <!-- FOTOS -->
+          <div class="tab-pane" id="pane-fotos">
+            <p><strong>Adicionar foto(s)</strong><br>
+            Você pode escolher uma ou mais fotos especiais e deixar um comentário
+            sobre elas.</p>
+
+            <label class="label" for="fotosInput">Foto(s) para enviar</label>
+            <input type="file" id="fotosInput" name="fotosInput"
+                   accept="image/*" multiple />
+
+            <label class="label" for="comentarioFotos" style="margin-top:10px;">
+              Comentário sobre as foto(s)
+            </label>
+            <textarea id="comentarioFotos" name="comentarioFotos"
+              placeholder="Se quiser, escreva algo sobre as fotos que você escolheu..."></textarea>
+          </div>
+
+          <!-- VÍDEO -->
+          <div class="tab-pane" id="pane-video">
+            <p><strong>Adicionar vídeo</strong><br>
+            Envie um vídeo curto (por exemplo, uma lembrança ou mensagem gravada)
+            e deixe um comentário sobre ele.</p>
+
+            <label class="label" for="videoInput">Vídeo para enviar</label>
+            <input type="file" id="videoInput" name="videoInput"
+                   accept="video/*" />
+
+            <label class="label" for="comentarioVideo" style="margin-top:10px;">
+              Comentário sobre o vídeo
+            </label>
+            <textarea id="comentarioVideo" name="comentarioVideo"
+              placeholder="Explique rapidamente o contexto do vídeo, se desejar..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary" id="btnEnviar">
+          Enviar homenagem
+        </button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<p class="footer-note">
+  Este é um protótipo local: os arquivos de foto/vídeo não são enviados para um servidor,
+  apenas as informações em <strong>localStorage</strong>. Em produção, tudo seria armazenado
+  em um servidor seguro.
+</p>
+
+<script>
+const STORAGE_MURAIS = 'murais_mh';
+const STORAGE_HOMENAGENS = 'homenagens_mh';
+
+/* utilidades */
+function getMuralIdFromUrl(){
+  const p = new URLSearchParams(window.location.search);
+  return p.get('id');
+}
+function carregarMurais(){
+  try{
+    const raw = localStorage.getItem(STORAGE_MURAIS);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function carregarHomenagens(){
+  try{
+    const raw = localStorage.getItem(STORAGE_HOMENAGENS);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function salvarHomenagens(lista){
+  localStorage.setItem(STORAGE_HOMENAGENS, JSON.stringify(lista));
+}
+function readFileAsDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+/* preencher info do mural no topo */
+document.addEventListener('DOMContentLoaded', () => {
+  const muralId = getMuralIdFromUrl();
+  const murais = carregarMurais();
+  const mural = murais.find(m => m.id === muralId);
+
+  const avatarInicial = document.getElementById('avatarInicial');
+  const muralNome = document.getElementById('muralNome');
+  const muralSub = document.getElementById('muralSub');
+
+  if (mural){
+    const inicial = (mural.nome || 'M').trim()[0] || 'M';
+    avatarInicial.textContent = inicial.toUpperCase();
+    muralNome.textContent = mural.nome || 'Mural';
+
+    const relacao = mural.relacao || 'um ente querido';
+    muralSub.innerHTML =
+      `Envie uma homenagem para a família de <strong>${mural.nome || 'seu ente querido'}</strong> (${relacao}).<br>` +
+      `Sua homenagem poderá aparecer no mural exibido na TV/TOTEM do velório.`;
+  }
+
+  /* controle das abas */
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panes = {
+    texto: document.getElementById('pane-texto'),
+    fotos: document.getElementById('pane-fotos'),
+    video: document.getElementById('pane-video')
+  };
+  tabBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const tab = btn.dataset.tab;
+      tabBtns.forEach(b=>b.classList.toggle('active', b===btn));
+      Object.entries(panes).forEach(([name,pane])=>{
+        pane.classList.toggle('active', name===tab);
+      });
+    });
+  });
+
+  /* envio do formulário */
+  const form = document.getElementById('formHomenagem');
+  const btnEnviar = document.getElementById('btnEnviar');
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    if (!muralId){
+      alert('Não foi possível identificar o mural desta homenagem.');
+      return;
+    }
+
+    const nome = document.getElementById('seuNome').value.trim();
+    const relacao = document.getElementById('seuParentesco').value.trim();
+    const mensagemTexto = document.getElementById('mensagemTexto').value.trim();
+    const comentarioFotos = document.getElementById('comentarioFotos').value.trim();
+    const comentarioVideo = document.getElementById('comentarioVideo').value.trim();
+    const fotosInput = document.getElementById('fotosInput');
+    const videoInput = document.getElementById('videoInput');
+
+    if (!mensagemTexto && fotosInput.files.length === 0 && !videoInput.files[0]){
+      alert('Escreva uma mensagem, escolha pelo menos uma foto ou selecione um vídeo antes de enviar.');
+      return;
+    }
+
+    btnEnviar.disabled = true;
+
+    try{
+      /* ler fotos como dataUrl */
+      const fotos = [];
+      for (const file of fotosInput.files){
+        const dataUrl = await readFileAsDataUrl(file);
+        fotos.push({
+          nome:file.name,
+          type:file.type,
+          tamanho:file.size,
+          dataUrl
+        });
+      }
+
+      /* ler vídeo como dataUrl (se existir) */
+      let video = null;
+      if (videoInput.files[0]){
+        const file = videoInput.files[0];
+        const dataUrl = await readFileAsDataUrl(file);
+        video = {
+          nome:file.name,
+          type:file.type,
+          tamanho:file.size,
+          dataUrl
+        };
+      }
+
+      const todas = carregarHomenagens();
+      todas.push({
+        id:'hom_'+Date.now(),
+        muralId,
+        nome,
+        relacao,
+        mensagemTexto,
+        fotos,
+        comentarioFotos,
+        video,
+        comentarioVideo,
+        enviadaEm:new Date().toISOString()
+      });
+      salvarHomenagens(todas);
+
+      alert('Homenagem enviada com sucesso!');
+
+      // volta para o mural para ver aparecendo no carrossel
+      window.location.href = 'mural.html?id=' + encodeURIComponent(muralId);
+
+    }catch(err){
+      console.error(err);
+      alert('Ocorreu um erro ao processar os arquivos. Tente novamente.');
+      btnEnviar.disabled = false;
+    }
+  });
+});
+</script>
+
+</body>
+</html>
